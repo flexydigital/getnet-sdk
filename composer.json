@@ -1,0 +1,24 @@
+{
+  "name": "flexy/getnet-sdk",
+  "description": "SDK da plataforma digital da GETNET",
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.6.0"
+  },
+  "autoload": {
+    "psr-0": {
+      "Getnet": "src/"
+    }
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Bruno Paz",
+      "email": "brunopaz@azpay.com.br"
+    },
+    {
+      "name": "Carlos Artur Neubert Gonçalves",
+      "email": "carlos.goncalves@flexy.com.br"
+    }
+  ]
+}
