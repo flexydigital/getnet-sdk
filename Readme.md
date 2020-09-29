@@ -1,6 +1,13 @@
 ### GETNET SDK PHP - API v1
 E-commerce
 
+Esse projeto é uma melhoria do projeto disponível em * https://github.com/brunopazz/GetnetSDK. 
+As alterações foram feitas para incluir suporte à marketplaces no plugin, que originalmente não possuia esse suporte.
+Para puxar atualizações do projeto original
+```bash
+$ git pull sync master --allow-unrelated-histories
+```
+
 Todos os passos e processos referentes à integração com o sistema de captura e autorização de transações financeiras da Getnet via as funcionalidades da API.
 
  Documentação oficial
