@@ -13,26 +13,37 @@ namespace Getnet\API;
 class Transaction
 {
 
+    const DEFAULT_CURRENCY = "BRL";
+
     /**
      * @var
      */
     private $amount;
+
     /**
      * @var
      */
-    private $currency;
+    private $currency = self::DEFAULT_CURRENCY;
+
     /**
      * @var
      */
     private $customer;
+
     /**
      * @var
      */
     private $order;
+
     /**
      * @var
      */
     private $seller_id;
+
+    /**
+     * @var MarketplaceSubsellerPayments
+     */
+    private $marketplace_subseller_payments;
 
 
     /**
@@ -124,6 +135,16 @@ class Transaction
         $this->boleto = $boleto;
 
         return $boleto;
+    }
+
+    /**
+     * @return MarketplaceSubsellerPayments
+     */
+    public function MarketplaceSubsellerPayments()
+    {
+        $this->marketplace_subseller_payments =  new MarketplaceSubsellerPayments();
+        
+        return $this->marketplace_subseller_payments;
     }
 
     /**
