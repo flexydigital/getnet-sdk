@@ -22,6 +22,7 @@ class BoletoRespose extends BaseResponse
     public $document_number;
     public $boleto_pdf;
     public $boleto_html;
+    
     /**
      * @var
      */

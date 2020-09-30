@@ -12,6 +12,8 @@ namespace Getnet\API;
  */
 class Credit implements \JsonSerializable
 {
+    use ToStringJsonTrait;
+
     /**
      * @var
      */
@@ -56,14 +58,6 @@ class Credit implements \JsonSerializable
     public function __construct($pre_authorization)
     {
         $this->pre_authorization = $pre_authorization;
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 
     /**

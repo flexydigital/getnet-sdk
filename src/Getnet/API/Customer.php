@@ -15,7 +15,7 @@ namespace Getnet\API;
  */
 class Customer implements \JsonSerializable
 {
-
+    use ToStringJsonTrait;
 
     /**
      * Customer constructor.
@@ -35,20 +35,6 @@ class Customer implements \JsonSerializable
         $this->customer_id = $customer_id;
 
         return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
-    {
-
-        $vars = get_object_vars ($this);
-        $vars_clear = array_filter ($vars, function ( $value ) {
-            return null !== $value;
-        });
-
-        return $vars_clear;
     }
 
     /**

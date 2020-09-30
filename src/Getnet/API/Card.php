@@ -1,6 +1,9 @@
 <?php
 namespace Getnet\API;
-    /**
+
+use Getnet\API\ToStringJsonTrait;
+
+/**
      * Created by PhpStorm.
      * User: brunopaz
      * Date: 09/07/2018
@@ -13,6 +16,8 @@ namespace Getnet\API;
  */
 class Card implements \JsonSerializable
 {
+    use ToStringJsonTrait;
+
     /**
      * @var
      */
@@ -46,22 +51,6 @@ class Card implements \JsonSerializable
     public function __construct(Token $card)
     {
         $this->setNumberToken($card);
-    }
-
-
-    /**
-     * @return array
-     */
-
-    public function jsonSerialize()
-    {
-
-        $vars = get_object_vars($this);
-        $vars_clear = array_filter($vars, function ($value) {
-            return null !== $value;
-        });
-
-        return $vars_clear;
     }
 
     /**

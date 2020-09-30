@@ -8,6 +8,7 @@
 
 namespace Getnet\API;
 
+use Getnet\API\ToStringJsonTrait;
 
 /**
  * Class BaseResponse
@@ -15,6 +16,8 @@ namespace Getnet\API;
  */
 class BaseResponse implements \JsonSerializable
 {
+    use ToStringJsonTrait;
+
     /**
      * @var
      */
@@ -64,15 +67,11 @@ class BaseResponse implements \JsonSerializable
      */
     public $responseJSON;
 
-    public $status_label;
     /**
-     * @return array
+     * @var
      */
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
-    }
-
+    public $status_label;
+    
     /**
      * @return mixed
      */

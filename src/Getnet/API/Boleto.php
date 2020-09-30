@@ -8,9 +8,12 @@
 
 namespace Getnet\API;
 
+use Getnet\API\ToStringJsonTrait;
 
 class Boleto implements \JsonSerializable
 {
+
+    use ToStringJsonTrait;
 
     private $our_number;
     private $document_number;
@@ -25,12 +28,6 @@ class Boleto implements \JsonSerializable
     public function __construct($our_number)
     {
         $this->our_number = $our_number;
-    }
-
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 
     /**

@@ -11,6 +11,8 @@ namespace Getnet\API;
 
 class Order implements \JsonSerializable
 {
+    use ToStringJsonTrait;
+    
     private $order_id;
     private $product_type;
     private $sales_tax;
@@ -22,12 +24,6 @@ class Order implements \JsonSerializable
     public function __construct($order_id)
     {
         $this->order_id = $order_id;
-    }
-
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 
     /**

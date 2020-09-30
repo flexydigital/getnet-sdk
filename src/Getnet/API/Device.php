@@ -10,6 +10,8 @@ namespace Getnet\API;
 
 class Device implements \JsonSerializable
 {
+    use ToStringJsonTrait;
+
     private $device_id;
     private $ip_address;
 
@@ -20,11 +22,6 @@ class Device implements \JsonSerializable
     public function __construct($device_id)
     {
         $this->device_id = $device_id;
-    }
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 
     /**

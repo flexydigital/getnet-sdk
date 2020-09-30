@@ -8,9 +8,12 @@
 
 namespace Getnet\API;
 
+use Getnet\API\ToStringJsonTrait;
 
 class Address implements \JsonSerializable
 {
+    use ToStringJsonTrait;
+
     private $city;
     private $complement;
     private $country;
@@ -27,12 +30,6 @@ class Address implements \JsonSerializable
     public function __construct($postal_code)
     {
         $this->postal_code = $postal_code;
-    }
-
-
-    public function jsonSerialize()
-    {
-        return get_object_vars($this);
     }
 
     /**
