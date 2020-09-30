@@ -74,6 +74,7 @@ class Credit implements \JsonSerializable
     public function setCard($card)
     {
         $this->card = $card;
+        return $this;
     }
 
     /**

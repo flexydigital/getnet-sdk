@@ -61,6 +61,7 @@ class Getnet
     public function setDebug($debug)
     {
         $this->debug = $debug;
+        return $this;
     }
 
     /**
@@ -77,6 +78,7 @@ class Getnet
     public function setAuthorizationToken($authorizationToken)
     {
         $this->authorizationToken = $authorizationToken;
+        return $this;
     }
 
     /**
@@ -93,6 +95,7 @@ class Getnet
     public function setClientId($client_id)
     {
         $this->client_id = $client_id;
+        return $this;
     }
 
     /**
@@ -109,6 +112,7 @@ class Getnet
     public function setClientSecret($client_secret)
     {
         $this->client_secret = $client_secret;
+        return $this;
     }
 
     /**
@@ -125,6 +129,7 @@ class Getnet
     public function setEnv($env)
     {
         $this->env = $env;
+        return $this;
     }
 
 
@@ -135,20 +140,15 @@ class Getnet
     public function Authorize(Transaction $transaction)
     {
         try {
+            $response = $this->makeAuthorizeRequest($transaction);
 
-            $request = new Request($this);
-
-            if (property_exists($transaction, "debit")) {
-                $response = $request->post($this, "/v1/payments/debit", $transaction->toJSON());
-            } elseif (property_exists($transaction, "credit")) {
-                $response = $request->post($this, "/v1/payments/credit", $transaction->toJSON());
-            }
-            if ($this->debug)
+            if ($this->debug) {
                 print $transaction->toJSON();
-        } catch (\Exception $e) {
+            }
+        } catch (\Exception $exception) {
 
             $error = new BaseResponse();
-            $error->mapperJson(json_decode($e->getMessage(), true));
+            $error->mapperJson(json_decode($exception->getMessage(), true));
 
             return $error;
         }
@@ -156,6 +156,22 @@ class Getnet
         $authresponse->mapperJson($response);
 
         return $authresponse;
+    }
+
+    /**
+     * @return void
+     */
+    private function makeAuthorizeRequest(Transaction $transaction)
+    {
+        $request = new Request($this);
+
+        if (property_exists($transaction, "debit")) {
+            return $request->post($this, "/v1/payments/debit", $transaction->toJSON());
+        } 
+        
+        if (property_exists($transaction, "credit")) {
+            return $request->post($this, "/v1/payments/credit", $transaction->toJSON());
+        }
     }
 
     /**

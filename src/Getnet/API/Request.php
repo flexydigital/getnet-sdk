@@ -23,25 +23,58 @@ class Request
      */
     private $baseUrl = '';
 
+    /** @var string ENVIRONMENT_PRODUCTION */
+    const ENVIRONMENT_PRODUCTION = "PRODUCTION";
+
+    /** @var string ENVIRONMENT_HOMOLOG */
+    const ENVIRONMENT_HOMOLOG = "HOMOLOG";
+
+    /** @var string ENVIRONMENT_SANDBOX */
+    const ENVIRONMENT_SANDBOX = "SANDBOX";
+
+    /** @var string URL_ENVIRONMENT_PRODUCTION */
+    const URL_ENVIRONMENT_PRODUCTION = 'https://api.getnet.com.br';
+    
+    /** @var string URL_ENVIRONMENT_HOMOLOG */
+    const URL_ENVIRONMENT_HOMOLOG = 'https://api-homologacao.getnet.com.br';
+    
+    /** @var string URL_ENVIRONMENT_SANDBOX */
+    const URL_ENVIRONMENT_SANDBOX = 'https://api-sandbox.getnet.com.br';
+
+    /** @var array ENVIROMENT_URLS */
+    const ENVIROMENT_URLS = [
+        self::ENVIRONMENT_PRODUCTION => self::URL_ENVIRONMENT_PRODUCTION,
+        self::ENVIRONMENT_HOMOLOG => self::URL_ENVIRONMENT_HOMOLOG,
+        self::ENVIRONMENT_SANDBOX => self::URL_ENVIRONMENT_SANDBOX,
+    ];
+
     /**
      * Request constructor.
      * @param Getnet $credentials
      */
-    function __construct(Getnet $credentials)
-    {
-
-        if ($credentials->getEnv() == "PRODUCTION")
-            $this->baseUrl = 'https://api.getnet.com.br';
-        elseif ($credentials->getEnv() == "HOMOLOG")
-            $this->baseUrl = 'https://api-homologacao.getnet.com.br';
-        elseif ($credentials->getEnv() == "SANDBOX")
-            $this->baseUrl = 'https://api-sandbox.getnet.com.br';
-
-        if ($credentials->debug == true)
+    public function __construct(Getnet $credentials)
+    {   
+        $this->configureEnviromentUrl($credentials);      
+        if ($credentials->debug == true) {
             print_r($this->baseUrl);
+        }
 
-        if (empty($credentials->getEnv()))
+        if (empty($credentials->getEnv())) {
             return $this->auth($credentials);
+        }
+    }
+
+    /**
+     * @param Getnet $credentials
+     * @return void
+     */
+    private function configureEnviromentUrl(Getnet $credentials)
+    {
+        $this->baseUrl = self::ENVIRONMENT_SANDBOX;
+        if (array_key_exists($credentials->getEnv(), self::ENVIROMENT_URLS)) {
+            $this->baseUrl = self::ENVIROMENT_URLS[$credentials->getEnv()];
+        }
+        return $this->baseUrl;        
     }
 
 
@@ -50,7 +83,7 @@ class Request
      * @return Getnet
      * @throws Exception
      */
-    function auth(Getnet $credentials)
+    public function auth(Getnet $credentials)
     {
         $url_path = "/auth/oauth/v2/token";
 
@@ -61,9 +94,9 @@ class Request
 
         $querystring = http_build_query($params);
 
-        try{
+        try {
             $response = $this->send($credentials, $url_path, 'AUTH', $querystring);
-        }catch (Exception $e){
+        } catch (Exception $e) {
             throw new Exception($e->getMessage(), 100);
         }
 
@@ -176,7 +209,7 @@ class Request
      * @return mixed
      * @throws Exception
      */
-    function get(Getnet $credentials, $url_path)
+    public function get(Getnet $credentials, $url_path)
     {
         return $this->send($credentials, $url_path, 'GET');
     }
@@ -189,7 +222,7 @@ class Request
      * @return mixed
      * @throws Exception
      */
-    function post(Getnet $credentials, $url_path, $params)
+    public function post(Getnet $credentials, $url_path, $params)
     {
         return $this->send($credentials, $url_path, 'POST', $params);
     }
@@ -202,7 +235,7 @@ class Request
      * @return mixed
      * @throws Exception
      */
-    function put(Getnet $credentials, $url_path, $params)
+    public function put(Getnet $credentials, $url_path, $params)
     {
         return $this->send($credentials, $url_path, 'PUT', $params);
     }

@@ -74,6 +74,7 @@ class AuthorizeResponse extends BaseResponse
     public function setRedirectUrl($redirect_url)
     {
         $this->redirect_url = $redirect_url;
+        return $this;
     }
 
     /**
@@ -90,6 +91,7 @@ class AuthorizeResponse extends BaseResponse
     public function setIssuerPaymentId($issuer_payment_id)
     {
         $this->issuer_payment_id = $issuer_payment_id;
+        return $this;
     }
 
     /**
@@ -106,6 +108,7 @@ class AuthorizeResponse extends BaseResponse
     public function setPayerAuthenticationRequest($payer_authentication_request)
     {
         $this->payer_authentication_request = $payer_authentication_request;
+        return $this;
     }
 
     /**

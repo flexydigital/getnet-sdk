@@ -188,10 +188,12 @@ class Transaction
 
     /**
      * @param mixed $shippings
+     * @return self
      */
     public function setShippings($shippings)
     {
         $this->shippings = $shippings;
+        return $this;
     }
 
     /**
@@ -208,6 +210,7 @@ class Transaction
     public function setAmount($amount)
     {
         $this->amount = $amount;
+        return $this;
     }
 
     /**
@@ -240,6 +243,7 @@ class Transaction
     public function setBoleto($boleto)
     {
         $this->boleto = $boleto;
+        return $this;
     }
 
     /**
@@ -256,6 +260,7 @@ class Transaction
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+        return $this;
     }
 
     /**
@@ -272,6 +277,7 @@ class Transaction
     public function setCustomer(Customer $customer)
     {
         $this->customer = $customer;
+        return $this;
     }
 
     /**
@@ -288,6 +294,7 @@ class Transaction
     public function setDevice($device)
     {
         $this->device = $device;
+        return $this;
     }
 
     /**
@@ -316,6 +323,7 @@ class Transaction
     public function setOrder(Order $order)
     {
         $this->order = $order;
+        return $this;
     }
 
     /**
@@ -332,6 +340,7 @@ class Transaction
     public function setSellerId($seller_id)
     {
         $this->seller_id = $seller_id;
+        return $this;
     }
 
 }

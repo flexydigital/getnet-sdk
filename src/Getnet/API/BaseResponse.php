@@ -18,6 +18,46 @@ class BaseResponse implements \JsonSerializable
 {
     use ToStringJsonTrait;
 
+    /** @var int HTTP_STATUS_CREATED */
+    const HTTP_STATUS_CREATED = 201;
+
+    /** @var int HTTP_STATUS_ACCEPTED */
+    const HTTP_STATUS_ACCEPTED = 202;
+
+    /** @var int HTTP_STATUS_PAYMENT_REQUIRED */
+    const HTTP_STATUS_PAYMENT_REQUIRED = 402;
+
+    /** @var int HTTP_STATUS_BAD_REQUEST */
+    const HTTP_STATUS_BAD_REQUEST = 400;
+
+    /** @var int HTTP_STATUS_INTERNAL_SERVER_ERROR */
+    const HTTP_STATUS_INTERNAL_SERVER_ERROR = 500;
+
+    /** @var int SPECIAL_RETURN_STATUS_PENDING */
+    const SPECIAL_RETURN_STATUS_PENDING = 1;
+
+    /** @var string STATUS_AUTHORIZED */
+    const STATUS_AUTHORIZED = "AUTHORIZED";
+
+    /** @var string STATUS_DENIED */
+    const STATUS_DENIED = "DENIED";
+
+    /** @var string STATUS_ERROR */
+    const STATUS_ERROR = "ERROR";
+
+    /** @var string STATUS_PENDING */
+    const STATUS_PENDING = "PENDING";
+
+    /** @var array STATUS_PENDING */
+    const RETURN_STATUS_MAP = [
+        self::HTTP_STATUS_CREATED => self::STATUS_AUTHORIZED,
+        self::HTTP_STATUS_ACCEPTED => self::STATUS_AUTHORIZED,
+        self::HTTP_STATUS_PAYMENT_REQUIRED => self::STATUS_DENIED,
+        self::HTTP_STATUS_BAD_REQUEST => self::STATUS_ERROR,
+        self::HTTP_STATUS_INTERNAL_SERVER_ERROR => self::STATUS_ERROR,
+        self::SPECIAL_RETURN_STATUS_PENDING => self::STATUS_PENDING,
+    ];
+
     /**
      * @var
      */
@@ -164,6 +204,7 @@ class BaseResponse implements \JsonSerializable
     public function setPaymentId($payment_id)
     {
         $this->payment_id = $payment_id;
+        return $this;
     }
 
     /**
@@ -180,6 +221,7 @@ class BaseResponse implements \JsonSerializable
     public function setSellerId($seller_id)
     {
         $this->seller_id = $seller_id;
+        return $this;
     }
 
     /**
@@ -196,6 +238,7 @@ class BaseResponse implements \JsonSerializable
     public function setAmount($amount)
     {
         $this->amount = $amount;
+        return $this;
     }
 
     /**
@@ -212,6 +255,7 @@ class BaseResponse implements \JsonSerializable
     public function setCurrency($currency)
     {
         $this->currency = $currency;
+        return $this;
     }
 
     /**
@@ -228,6 +272,7 @@ class BaseResponse implements \JsonSerializable
     public function setOrderId($order_id)
     {
         $this->order_id = $order_id;
+        return $this;
     }
 
     /**
@@ -235,24 +280,27 @@ class BaseResponse implements \JsonSerializable
      */
     public function getStatus()
     {
+        return $this->translateStatus();
+    }
 
-        if ($this->status_code == 201) {
-            $this->status = "AUTHORIZED";
-        } elseif ($this->status_code == 202) {
-            $this->status = "AUTHORIZED";
-        } elseif ($this->status_code == 402) {
-            $this->status = "DENIED";
-        } elseif ($this->status_code == 400) {
-            $this->status = "ERROR";
-        } elseif ($this->status_code == 402) {
-            $this->status = "ERROR";
-        } elseif ($this->status_code == 500) {
-            $this->status = "ERROR";
-        } elseif ($this->status_code == 1 || isset($this->redirect_url)) {
-            $this->status = "PENDING";
-        } elseif (isset($this->status_label)) {
+    /**
+     * @return void
+     */
+    private function translateStatus()
+    {
+
+        if (isset($this->status_label)) {
             $this->status = $this->status_label;
         }
+
+        if (isset($this->redirect_url)) {
+            $this->status = self::STATUS_PENDING;
+        }
+
+        if (array_key_exists($this->status_code, self::RETURN_STATUS_MAP)) {
+            $this->status = self::RETURN_STATUS_MAP[$this->status_code];
+        }
+
         return $this->status;
     }
 
@@ -262,6 +310,7 @@ class BaseResponse implements \JsonSerializable
     public function setStatus($status)
     {
         $this->status = $status;
+        return $this;
     }
 
     /**
@@ -278,6 +327,7 @@ class BaseResponse implements \JsonSerializable
     public function setReceivedAt($received_at)
     {
         $this->received_at = $received_at;
+        return $this;
     }
 
     /**
@@ -313,5 +363,6 @@ class BaseResponse implements \JsonSerializable
     public function setResponseJSON($array)
     {
         $this->responseJSON = json_encode($array, JSON_PRETTY_PRINT);
+        return $this;
     }
 }

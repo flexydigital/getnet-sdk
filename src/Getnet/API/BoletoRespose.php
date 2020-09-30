@@ -34,6 +34,7 @@ class BoletoRespose extends BaseResponse
     public function setBaseUrl($base_url)
     {
         $this->base_url = $base_url;
+        return $this;
     }
 
     /**
