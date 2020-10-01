@@ -2,8 +2,10 @@
 
 namespace Getnet\API;
 
-class OrderItems
-{    
+class OrderItem implements \JsonSerializable
+{
+    use ToStringJsonTrait;
+
     /**
      * @var float $amount
      */ 

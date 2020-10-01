@@ -10,10 +10,21 @@ namespace Getnet\API;
  * Class Transaction
  * @package Getnet\API
  */
-class Transaction
+class Transaction implements \JsonSerializable
 {
+    use ToStringJsonTrait;
 
+    /** @var string */
     const DEFAULT_CURRENCY = "BRL";
+    
+    /** @var string */
+    const TRANSACTION_TYPE_FULL = "FULL";
+    
+    /** @var string */
+    const TRANSACTION_TYPE_INSTALL_NO_INTEREST = "INSTALL_NO_INTEREST";
+    
+    /** @var string */
+    const TRANSACTION_TYPE_INSTALL_WITH_INTEREST = "INSTALL_WITH_INTEREST";
 
     /**
      * @var
@@ -41,10 +52,9 @@ class Transaction
     private $seller_id;
 
     /**
-     * @var MarketplaceSubsellerPayments
+     * @var MarketplaceSubsellerPayments[]
      */
     private $marketplace_subseller_payments;
-
 
     /**
      * @param $brand
@@ -142,9 +152,14 @@ class Transaction
      */
     public function MarketplaceSubsellerPayments()
     {
-        $this->marketplace_subseller_payments =  new MarketplaceSubsellerPayments();
+        if (is_null($this->marketplace_subseller_payments)) {
+            $this->marketplace_subseller_payments = [];
+        }
+
+        $marketplaceSubsellerPayment = new MarketplaceSubsellerPayments();
+        $this->marketplace_subseller_payments[] = $marketplaceSubsellerPayment;
         
-        return $this->marketplace_subseller_payments;
+        return $marketplaceSubsellerPayment;
     }
 
     /**

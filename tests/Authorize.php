@@ -7,22 +7,27 @@ namespace Getnet\API;
  * Time: 02:41
  */
 include "../vendor/autoload.php";
-$getnet = new Getnet("c076e924-a3fe-492d-a41f-1f8de48fb4b1", "bc097a2f-28e0-43ce-be92-d846253ba748", "SANDBOX");
-$transaction = new Transaction();
-$transaction->setSellerId("1955a180-2fa5-4b65-8790-2ba4182a94cb");
-$transaction->setCurrency("BRL");
-$transaction->setAmount("1000");
+$clientId = "4640b620-0aa0-4c1e-8178-65c2402b3e28";
+$clientSecret = "41b7d35f-3f99-44b3-88b5-fc83bddf5765";
+$customerId = "customer_" . mt_rand(100000000, 900000000);
 
-$card = new Token("5155901222280001", "customer_210818263", $getnet);
+$getnet = new Getnet($clientId, $clientSecret);
+$transaction = (new Transaction()) 
+    ->setSellerId("e7d3cb58-3688-40cb-8cd0-0b8903e8c91f")
+    ->setAmount("1000");
+
+$card = new Token("5155901222280001", $customerId, $getnet);
 $transaction->Credit("")
     ->setAuthenticated(false)
     ->setDynamicMcc("1799")
     ->setSoftDescriptor("LOJA*TESTE*COMPRA-123")
     ->setDelayed(false)
     ->setPreAuthorization(false)
-    ->setNumberInstallments("2")
+    ->setNumberInstallments(2)
     ->setSaveCardData(false)
-    ->setTransactionType("FULL")
+    ->setTransactionType(Transaction::TRANSACTION_TYPE_INSTALL_NO_INTEREST);
+
+$transaction->getCredit()
     ->Card($card)
     ->setBrand("MasterCard")
     ->setExpirationMonth("12")
@@ -30,7 +35,7 @@ $transaction->Credit("")
     ->setCardholderName("Bruno Paz")
     ->setSecurityCode(123);
 
-$transaction->Customer("customer_210818263")
+$transaction->Customer($customerId)
     ->setDocumentType("CPF")
     ->setEmail("customer@email.com.br")
     ->setFirstName("Bruno")
@@ -48,6 +53,17 @@ $transaction->Customer("customer_210818263")
     ->setState("SP")
     ->setStreet("Av. Brasil");
 
+$orderItem = (new OrderItem())
+    ->setAmount(1000)
+    ->setId(mt_rand())
+    ->setDescription("Product")
+    ->setTaxPercent(10);
+
+$transaction->MarketplaceSubsellerPayments()
+    ->setSubsellerId(mt_rand())
+    ->addOrderItem($orderItem)
+    ->setSubsellerSalesAmount(1000);
+
 $transaction->Shippings("")
     ->setEmail("customer@email.com.br")
     ->setFirstName("João")
@@ -63,16 +79,30 @@ $transaction->Shippings("")
     ->setState("RS")
     ->setStreet("Av. Brasil");
 
-$transaction->Order("123456")
+$transaction->Order(mt_rand(100000000, 900000000))
     ->setProductType("service")
     ->setSalesTax("0");
 
-$transaction->Device("hash-device-id")->setIpAddress("127.0.0.1");
+$transaction->Device(md5(uniqid(mt_rand(), true)))
+    ->setIpAddress("127.0.0.1");
+
+echo "<pre>";
+echo "Transaction" . "<br>";
+echo json_encode($transaction, JSON_PRETTY_PRINT);
+echo "<hr>";
 
 $response = $getnet->Authorize($transaction);
+echo "Response" . "<br>";
+var_dump($response);
+echo "<hr>";
 
-print_r($response->getStatus() . "\n");
+echo "Response status" . "<br>";
+var_dump($response->getStatus());
+echo "<hr>";
 
-### CANCELA PAGAMENTO (CANCEL)
+echo "Cancel status" . "<br>";
 $capture = $getnet->AuthorizeCancel($response->getPaymentId(), $response->getAmount());
 print_r($capture->getStatus() . "\n");
+echo "<hr>";
+
+echo "</pre>";

@@ -42,7 +42,7 @@ class Getnet
      * @param $env
      */
 
-    public function __construct($client_id, $client_secret, $env)
+    public function __construct($client_id, $client_secret, $env = Request::ENVIRONMENT_SANDBOX)
     {
         $this->client_id = $client_id;
         $this->client_secret = $client_secret;

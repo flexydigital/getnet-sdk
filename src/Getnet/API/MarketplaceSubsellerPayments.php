@@ -24,7 +24,6 @@ class MarketplaceSubsellerPayments implements \JsonSerializable
      */ 
     public $order_items = [];
 
-
     /**
      * Setter for attribute $subseller_sales_amount
      * @param float $value
@@ -90,9 +89,9 @@ class MarketplaceSubsellerPayments implements \JsonSerializable
      * @param  array $value
      * @return $this
      */
-    public function addOrderItems($value) 
+    public function addOrderItem(OrderItem $value) 
     {
-        array_push($this->order_items, $value);
+        $this->order_items[] = $value;
         return $this;
     }
 
