@@ -16,13 +16,13 @@ class Transaction implements \JsonSerializable
 
     /** @var string */
     const DEFAULT_CURRENCY = "BRL";
-    
+
     /** @var string */
     const TRANSACTION_TYPE_FULL = "FULL";
-    
+
     /** @var string */
     const TRANSACTION_TYPE_INSTALL_NO_INTEREST = "INSTALL_NO_INTEREST";
-    
+
     /** @var string */
     const TRANSACTION_TYPE_INSTALL_WITH_INTEREST = "INSTALL_WITH_INTEREST";
 
@@ -50,11 +50,6 @@ class Transaction implements \JsonSerializable
      * @var
      */
     private $seller_id;
-
-    /**
-     * @var MarketplaceSubsellerPayments[]
-     */
-    private $marketplace_subseller_payments;
 
     /**
      * @param $brand
@@ -145,21 +140,6 @@ class Transaction implements \JsonSerializable
         $this->boleto = $boleto;
 
         return $boleto;
-    }
-
-    /**
-     * @return MarketplaceSubsellerPayments
-     */
-    public function MarketplaceSubsellerPayments()
-    {
-        if (is_null($this->marketplace_subseller_payments)) {
-            $this->marketplace_subseller_payments = [];
-        }
-
-        $marketplaceSubsellerPayment = new MarketplaceSubsellerPayments();
-        $this->marketplace_subseller_payments[] = $marketplaceSubsellerPayment;
-        
-        return $marketplaceSubsellerPayment;
     }
 
     /**
