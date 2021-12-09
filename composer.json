@@ -1,5 +1,5 @@
 {
-  "name": "flexy/getnet-sdk",
+  "name": "flexydigital/getnet-sdk",
   "description": "SDK da plataforma digital da GETNET",
   "minimum-stability": "stable",
   "require": {
